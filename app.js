@@ -16,60 +16,73 @@ dice_faces={
       let player2_full_score=0; 
       let game_value=true;
       let winning_score=100;
-    //   document.querySelector('.player-1').classList.add('background_class1');
-    //   document.querySelector('.player-2').classList.add('background_class2');
-    function change_active_player(){
 
-    }
-      
-        document.querySelector('.roll-button').addEventListener('click',()=>{
-            if(game_value){
-                let number =Math.floor(Math.random()*6)+1;
-                document.querySelector('.dice').src=dice_faces[number];
-               if(player_value){
-                   Update_player1(number);
-               }else{
-                    Update_player2(number);
-               }
-            }
-      
-        })
-        document.querySelector('.hold-button').addEventListener('click',()=>{
-         if(game_value){
-            if(player_value){
-                Update_player1_full_score(player_1_score);
-            }else{
-                Update_player2_full_score(player_2_score);
-            }
-         }
-        })
 
-    function Update_player1(number){
-        if(number==6){
-            player_value=false;
-            player_1_score=0;
+    // roll button
+      document.querySelector('.roll-button').addEventListener('click',()=>{
+        if(game_value){
+            let number =Math.floor(Math.random()*6)+1;
+            document.querySelector('.dice').src=dice_faces[number];
+           if(player_value){
+            console.log("Update player 1")
+               Update_player1(number);
+           }else{
+            console.log("Update player 2")
+                Update_player2(number);
+           }
+        }
+  
+    })
+
+// hold button
+    document.querySelector('.hold-button').addEventListener('click',()=>{
+     if(game_value){
+        if(player_value){
+            Update_player1_full_score(player_1_score);
+        }else{
+            Update_player2_full_score(player_2_score);
+        }
+     }
+    })
+
+
+
+// changing of active player
+    function change_active_player(active_player){
+        if(active_player=="player-1"){
             document.querySelector('.player-1').classList.replace('background_class1','background_class2');
             document.querySelector('.player-2').classList.replace('background_class2','background_class1');
             document.querySelector('.active-1').classList.replace('active_background_class1','active_backround_class2');
             document.querySelector('.active-2').classList.replace('active_background_class2','active_background_class1');
+        }
+        else{
+            document.querySelector('.player-2').classList.replace('background_class1','background_class2');
+            document.querySelector('.player-1').classList.replace('background_class2','background_class1');
+             document.querySelector('.active-2').classList.replace('active_background_class1','active_background_class2');
+              document.querySelector('.active-1').classList.add('active_background_class1');
+            // this code could not work for some reason unknown  document.querySelector('.active-1').classList.replace('active_background_class2','active_background_class1');
+        }
+    }
+      
+  
+// updating player-1 current score
+    function Update_player1(number){
+        if(number==6){
+            player_value=false;
+            player_1_score=0;
+           change_active_player("player-1");
         }else{
             player_1_score+=number;
         }
         document.getElementById('current-score-1').textContent=player_1_score;
     }
 
-
+// updating player-2  current score
     function Update_player2(number){
         if(number==6){
             player_value=true;
             player_2_score=0;
-            document.querySelector('.player-2').classList.replace('background_class1','background_class2');
-            document.querySelector('.player-1').classList.replace('background_class2','background_class1');
-            // document.querySelector('.active-2').classList.replace('active_background_class1','active_background_class2');
-              document.querySelector('.active-1').classList.remove('active_background_class2');
-              document.querySelector('.active-2').classList.remove('active_background_class1');
-            //   document.querySelector('.active-1').classList.add('active_background_class1');
-            //   document.querySelector('.active-1').classList.replace('active_background_class2','active_background_class1');
+             change_active_player("player-2");
 
         }else{
             player_2_score+=number;
@@ -77,31 +90,25 @@ dice_faces={
         document.getElementById('current-score-2').textContent=player_2_score;
     }
 
-
+// updating player1- actual score
     function Update_player1_full_score(score){
         player_value=false;
         player1_full_score+=score;
         document.querySelector('.score-1').textContent=player1_full_score;
         player_1_score=0;
         document.getElementById('current-score-1').textContent=player_1_score;
-        if(player1_full_score<winning_score && player2_full_score<winning_score){
-            document.querySelector('.player-1').classList.replace('background_class1','background_class2');
-            document.querySelector('.player-2').classList.replace('background_class2','background_class1');
+        if(player1_full_score<winning_score){
+            change_active_player("player-1");
            
         }
-        if(player1_full_score>=winning_score||player2_full_score>=winning_score){
+        else if(player1_full_score>=winning_score){
             game_value=false;
-            if(player1_full_score>=winning_score){
-                document.querySelector('.name-1').textContent="winner!";
-                document.querySelector('.name-1').classList.add('color');
-
-            }else{
-                document.querySelector('.name-2').textContent="winner!"; 
-                document.querySelector('.name-2').classList.add('color')
-            }
+            document.querySelector('.name-1').textContent="winner!";
+            document.querySelector('.name-1').classList.add('color');
         }
     }
 
+    // updating player2-actual score
 
     function Update_player2_full_score(score){
         player_value=true;
@@ -109,22 +116,22 @@ dice_faces={
         document.querySelector('.score-2').textContent=player2_full_score;
         player_2_score=0;
         document.getElementById('current-score-2').textContent=player_2_score;
-        if(player1_full_score<winning_score && player2_full_score<winning_score){
-            document.querySelector('.player-2').classList.replace('background_class1','background_class2');
-            document.querySelector('.player-1').classList.replace('background_class2','background_class1');
+        if(player2_full_score<winning_score){
+            change_active_player("player-2");
         }
-        if(player1_full_score>=winning_score||player2_full_score>=winning_score){
+         else if(player2_full_score>=winning_score){
             game_value=false;
-            if(player2_full_score>=winning_score){
-                document.querySelector('.name-2').textContent="winner!";
-                document.querySelector('.name-2').classList.add('color')
-            }else{
-                document.querySelector('.name-1').textContent="winner!"; 
-                document.querySelector('.name-1').classList.add('color');
-            }
-
+            document.querySelector('.name-2').textContent="winner!";
+            document.querySelector('.name-2').classList.add('color');
         }
     }
+
+
+
+   
+
+
+
 
 
 

@@ -126,13 +126,13 @@ body{
     top:164px;
     
  }
- .active_background_class2{
-    background:white; 
-}
+
 .active_background_class1{
     background:red; 
 }
-
+ .active_background_class2{
+    background:white; 
+}
 .color{
     color:red;
 }
